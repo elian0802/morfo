@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+<title>Repaso Morfología I</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: one reading column like an atlas study sheet; tabs switch between summary, flashcards and self-test. */
+:root{
+  --bg:#F3F5F9; --surface:#FFFFFF; --ink:#141E35; --muted:#58637A; --line:#D8DEE9;
+  --accent:#2A57A3; --accent-soft:#E2EAF8; --ochre:#94600F; --ochre-soft:#F5EBDA;
+  --ok:#2B7754; --ok-soft:#DFF0E6; --bad:#AE3838; --bad-soft:#F7E1E1;
+  --f-display:"Fraunces",Georgia,"Times New Roman",serif;
+  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0E1320; --surface:#161D2C; --ink:#E5E9F1; --muted:#9BA5B9; --line:#2A3448;
+  --accent:#88AAEA; --accent-soft:#1D2A44; --ochre:#E3AE62; --ochre-soft:#33291A;
+  --ok:#6DC59B; --ok-soft:#173327; --bad:#EE8D8D; --bad-soft:#3A1E23; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0E1320; --surface:#161D2C; --ink:#E5E9F1; --muted:#9BA5B9; --line:#2A3448;
+  --accent:#88AAEA; --accent-soft:#1D2A44; --ochre:#E3AE62; --ochre-soft:#33291A;
+  --ok:#6DC59B; --ok-soft:#173327; --bad:#EE8D8D; --bad-soft:#3A1E23; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding-inline:18px;padding-block:28px 64px}
+h1,h2,h3{font-family:var(--f-display);font-weight:650;line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,6vw,2.9rem);letter-spacing:-.01em}
+h2{font-size:1.75rem}
+h3{font-size:1.2rem;font-weight:500}
+p{margin:0}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);max-width:62ch;margin-top:10px}
+header.top{display:grid;gap:6px;padding-bottom:22px}
+
+.method{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:18px}
+.method div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:4px}
+.method b{font-family:var(--f-mono);font-size:.78rem;color:var(--accent);letter-spacing:.05em}
+.method p{font-size:.93rem}
+
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;padding-block:10px;border-bottom:1px solid var(--line);margin-bottom:22px;flex-wrap:wrap}
+nav.tabs button{font:600 .95rem var(--f-body);color:var(--muted);background:transparent;border:1px solid transparent;border-radius:999px;padding:7px 16px;cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+nav.tabs button:focus-visible,.chip:focus-visible,.btn:focus-visible,.opt:focus-visible,.card:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.chip{font:600 .85rem var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 13px;text-decoration:none;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+
+section.unit{display:grid;gap:18px;padding-block:8px 36px;border-bottom:1px solid var(--line);margin-bottom:30px;scroll-margin-top:70px}
+.unit-head{display:grid;gap:4px}
+.unit-head .src{font-size:.85rem;color:var(--muted)}
+.block{display:grid;gap:8px;min-width:0}
+.block>p,.block li{max-width:68ch}
+ul.tight{margin:0;padding-left:1.15em;display:grid;gap:4px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.two>*{min-width:0}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:8px;min-width:0}
+.box h4{margin:0;font:700 .95rem var(--f-body)}
+.key{background:var(--ochre-soft);border-left:4px solid var(--ochre);border-radius:4px 10px 10px 4px;padding:12px 16px;display:grid;gap:6px}
+.key .tag{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ochre);font-weight:700}
+.trap{background:var(--bad-soft);border-left:4px solid var(--bad);border-radius:4px 10px 10px 4px;padding:12px 16px;display:grid;gap:6px}
+.trap .tag{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--bad);font-weight:700}
+.mn{font-family:var(--f-display);font-style:italic;font-size:1.08rem}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font:700 .78rem var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--accent-soft)}
+tr:last-child td{border-bottom:0}
+td b{font-weight:700}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
+
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:2px}
+.fig .n{font:700 1.7rem var(--f-mono);color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.1}
+.fig .l{font-size:.86rem;color:var(--muted)}
+
+/* Flashcards */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}
+.progress{font-family:var(--f-mono);font-size:.85rem;color:var(--muted);margin-left:auto}
+.bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:18px}
+.bar i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;min-height:230px;padding:26px 24px;display:grid;align-content:center;gap:14px;cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%}
+.card .topic{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.card .q{font-family:var(--f-display);font-size:1.35rem;font-weight:500;line-height:1.35}
+.card .a{border-top:1px dashed var(--line);padding-top:14px;font-size:1rem}
+.card .hint{font-size:.85rem;color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.btn{font:700 .95rem var(--f-body);border-radius:10px;padding:11px 18px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn.good{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.btn.again{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.btn:disabled{opacity:.45;cursor:default}
+.small{font-size:.85rem;color:var(--muted)}
+
+/* Quiz */
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 22px;display:grid;gap:14px}
+.qcard .q{font-family:var(--f-display);font-size:1.3rem;font-weight:500;line-height:1.35}
+.opts{display:grid;gap:8px}
+.opt{font:inherit;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 14px;cursor:pointer;color:var(--ink)}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--ok-soft);border-color:var(--ok);color:var(--ink)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--ink)}
+.expl{font-size:.95rem;border-left:3px solid var(--accent);padding-left:12px}
+.score{font:700 3rem var(--f-mono);color:var(--accent)}
+.review{display:grid;gap:10px;margin-top:6px}
+.review div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.93rem}
+
+@media (max-width:520px){ .card{padding:20px 18px} .card .q{font-size:1.2rem} }
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;scroll-behavior:auto!important} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">Morfología I · 4 clases · 83 diapositivas</span>
+  <h1>Huesos y articulaciones, en una página</h1>
+  <p class="lede">Bases anatómicas y osteología, cráneo, esqueleto (tórax y miembros) y articulaciones. Primero el resumen, luego tarjetas y autoexamen para fijarlo.</p>
+  <div class="method" aria-label="Método de estudio">
+    <div><b>PASO 1 · LEE</b><p>Una unidad del resumen a la vez (10–15 min). Los recuadros ocres son lo que más se pregunta.</p></div>
+    <div><b>PASO 2 · RECUERDA</b><p>Ve a <em>Tarjetas</em>, filtra esa unidad y responde en voz alta antes de voltear. Eso fija la memoria mucho más que releer.</p></div>
+    <div><b>PASO 3 · COMPRUEBA</b><p>Haz el <em>Autoexamen</em>. Repite solo las falladas, y vuelve a hacerlo al día siguiente.</p></div>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Secciones">
+  <button role="tab" id="tab-resumen" data-tab="resumen" aria-selected="true">Resumen</button>
+  <button role="tab" id="tab-tarjetas" data-tab="tarjetas" aria-selected="false">Tarjetas</button>
+  <button role="tab" id="tab-examen" data-tab="examen" aria-selected="false">Autoexamen</button>
+</nav>
+
+<!-- ===================== RESUMEN ===================== -->
+<div id="panel-resumen" role="tabpanel" aria-labelledby="tab-resumen">
+  <div class="jump">
+    <a class="chip" href="#bases">1 · Bases y osteología</a>
+    <a class="chip" href="#craneo">2 · Cráneo</a>
+    <a class="chip" href="#esqueleto">3 · Esqueleto</a>
+    <a class="chip" href="#articulaciones">4 · Articulaciones</a>
+    <a class="chip" href="#cifras">Cifras clave</a>
+    <a class="chip" href="#ojo">Ojo con esto</a>
+  </div>
+
+  <!-- 1 BASES -->
+  <section class="unit" id="bases">
+    <div class="unit-head"><span class="eyebrow">Unidad 1</span><h2>Bases anatómicas y osteología</h2></div>
+
+    <div class="block">
+      <p><b>Anatomía:</b> ciencia que estudia la estructura del cuerpo humano y las relaciones entre sus partes.</p>
+      <div class="two">
+        <div class="box"><h4>Macroscópica (a simple vista)</h4>
+          <ul class="tight"><li><b>Sistémica:</b> órganos agrupados en sistemas o aparatos.</li><li><b>Regional:</b> todas las estructuras de una región.</li><li><b>De superficie:</b> relieves que se palpan o ven en la piel.</li><li><b>Clínica o aplicada:</b> relaciona anatomía con exploración, diagnóstico y procedimientos.</li><li><b>Radiológica:</b> radiografía, ultrasonido, TC y resonancia.</li></ul></div>
+        <div class="box"><h4>Microscópica (con microscopio)</h4>
+          <ul class="tight"><li><b>Histología:</b> tejidos.</li><li><b>Citología:</b> células.</li><li><b>Biología molecular:</b> moléculas y procesos celulares.</li><li><b>Embriología:</b> desarrollo embrionario y fetal.</li></ul></div>
+      </div>
+    </div>
+
+    <div class="key"><span class="tag">Posición anatómica</span><p>Cuerpo erguido y de frente, cabeza y mirada al frente, brazos a los lados con las <b>palmas hacia adelante</b>, pies paralelos apuntando al frente. Todo término de relación se describe desde esta posición.</p></div>
+
+    <div class="block"><h3>Términos de relación</h3>
+      <div class="tbl"><table>
+        <tr><th>Par</th><th>Significa</th></tr>
+        <tr><td><b>Superior / Inferior</b></td><td>Hacia la cabeza / hacia los pies</td></tr>
+        <tr><td><b>Anterior / Posterior</b></td><td>Hacia adelante (cara frontal) / hacia atrás (cara dorsal)</td></tr>
+        <tr><td><b>Medial / Lateral</b></td><td>Más cerca / más lejos de la línea media</td></tr>
+        <tr><td><b>Proximal / Distal</b></td><td>Más cerca / más lejos del punto de origen o unión (se usa en miembros)</td></tr>
+        <tr><td><b>Superficial / Profundo</b></td><td>Más cerca / más lejos de la superficie del cuerpo</td></tr>
+        <tr><td><b>Interno / Externo</b></td><td>Hacia el interior / hacia el exterior del cuerpo</td></tr>
+        <tr><td><b>Ipsilateral / Contralateral</b></td><td>Del mismo lado / del lado opuesto</td></tr>
+      </table></div>
+      <p class="small">Usar lenguaje anatómico hace la descripción precisa, universal y segura. Ejemplo de la clase: “lesión en la región deltoidea del hombro derecho, porción posterior”.</p>
+    </div>
+
+    <div class="block"><h3>Planimetría: los planos</h3>
+      <div class="tbl"><table>
+        <tr><th>Plano</th><th>Divide en</th><th>Detalle que preguntan</th></tr>
+        <tr><td><b>Sagital</b></td><td>Derecha e izquierda</td><td>Vertical, de adelante hacia atrás. Si pasa por la línea media es el <b>sagital medio</b> (mitades iguales).</td></tr>
+        <tr><td><b>Frontal o coronal</b></td><td>Anterior y posterior</td><td>Vertical “de oreja a oreja”; pasa por ambos hombros y caderas; perpendicular al sagital.</td></tr>
+        <tr><td><b>Transversal, horizontal o axial</b></td><td>Superior (craneal) e inferior (caudal)</td><td>Perpendicular a los otros dos; son los cortes axiales de la tomografía.</td></tr>
+        <tr><td><b>Oblicuo</b></td><td>Corte diagonal</td><td>Ni paralelo ni perpendicular a los anteriores; para estructuras de trayecto inclinado.</td></tr>
+      </table></div>
+    </div>
+
+    <div class="block"><h3>Osteología</h3>
+      <p>Rama de la anatomía que estudia los huesos y el sistema esquelético: forma, estructura (tejido compacto y esponjoso), accidentes óseos (proyecciones, depresiones, forámenes, crestas, surcos), clasificación, organización (axial y apendicular) y funciones. El adulto tiene <span class="num">206</span> huesos.</p>
+    </div>
+
+    <div class="block"><h3>Desarrollo y crecimiento del hueso</h3>
+      <div class="two">
+        <div class="box"><h4>Osificación intramembranosa</h4><p>El hueso se forma <b>directo del mesénquima, sin molde de cartílago</b>. Forma huesos planos: <b>cráneo y clavículas</b>.</p></div>
+        <div class="box"><h4>Osificación endocondral</h4><p>Un <b>molde de cartílago hialino</b> se reemplaza por hueso. Forma la mayoría de los huesos: <b>huesos largos</b> de las extremidades.</p></div>
+      </div>
+      <div class="two">
+        <div class="box"><h4>Crecimiento en longitud</h4><p>En la <b>placa epifisaria</b> (cartílago de crecimiento), entre epífisis y metáfisis. Secuencia: <b>proliferación</b> de condrocitos en columnas → <b>calcificación</b> (los hipertrofiados mueren) → <b>osificación</b> (entran vasos, el hueso reemplaza al cartílago) → <b>crecimiento</b>. Termina cuando la placa se cierra, al final de la adolescencia o inicio de la adultez.</p></div>
+        <div class="box"><h4>Crecimiento en grosor</h4><p><b>Aposicional:</b> los <b>osteoblastos del periostio</b> añaden capas en la superficie externa.<br><b>Remodelación:</b> los <b>osteoclastos</b> remodelan la superficie interna.</p>
+          <p class="mn">Osteo<b>B</b>lasto = <b>B</b>uilder (construye). Osteo<b>C</b>lasto = <b>C</b>ome hueso.</p></div>
+      </div>
+      <div class="tbl"><table>
+        <tr><th>Factor</th><th>Efecto</th></tr>
+        <tr><td><b>Hormona del crecimiento (GH)</b></td><td>Estimula proliferación y maduración de condrocitos</td></tr>
+        <tr><td><b>IGF-1</b></td><td>Mediador principal del efecto de la GH en el cartílago de crecimiento</td></tr>
+        <tr><td><b>Hormonas tiroideas</b></td><td>Esenciales para crecimiento y maduración ósea normal</td></tr>
+        <tr><td><b>Estrógenos y testosterona</b></td><td><b>Aceleran el cierre</b> de la placa epifisaria y favorecen la mineralización</td></tr>
+        <tr><td><b>Nutrición</b></td><td>Calcio, fósforo y vitamina D, indispensables para formar y mineralizar hueso</td></tr>
+      </table></div>
+      <p class="small">Etapas: vida embrionaria (inicia la osificación) → infancia (crece en longitud y grosor) → adolescencia (máxima velocidad, acción hormonal intensa) → adultez (placa cerrada, remodelación continua).</p>
+    </div>
+
+    <div class="block"><h3>Funciones del esqueleto (6)</h3>
+      <p><b>Sostén</b> · <b>Protección</b> · <b>Movimiento</b> (con músculos y articulaciones) · <b>Hematopoyesis</b> (médula ósea) · <b>Almacén de minerales</b> (calcio y fósforo) · <b>Reserva energética</b> (médula ósea amarilla).</p>
+      <p class="mn">“Sólo Puedo Mover Huesos Al Reír”: Sostén, Protección, Movimiento, Hematopoyesis, Almacén, Reserva.</p>
+    </div>
+
+    <div class="block"><h3>Constitución del esqueleto: 206 = 80 + 126</h3>
+      <div class="two">
+        <div class="box"><h4>Axial · 80 huesos</h4>
+          <div class="tbl"><table>
+            <tr><td>Cráneo</td><td class="num">22</td></tr>
+            <tr><td>Huesecillos del oído (martillo, yunque, estribo ×2)</td><td class="num">6</td></tr>
+            <tr><td>Hioides</td><td class="num">1</td></tr>
+            <tr><td>Columna vertebral</td><td class="num">26</td></tr>
+            <tr><td>Caja torácica (24 costillas + esternón)</td><td class="num">25</td></tr>
+          </table></div></div>
+        <div class="box"><h4>Apendicular · 126 huesos</h4>
+          <ul class="tight"><li><b>Cintura escapular:</b> clavículas y escápulas.</li><li><b>Miembros superiores:</b> brazo, antebrazo y mano.</li><li><b>Cintura pélvica:</b> huesos coxales.</li><li><b>Miembros inferiores:</b> muslo, pierna y pie.</li></ul>
+          <p class="small">Axial = soporte, protección y estabilidad. Miembro superior = movilidad y manipulación. Miembro inferior = soporte, equilibrio y locomoción.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 CRANEO -->
+  <section class="unit" id="craneo">
+    <div class="unit-head"><span class="eyebrow">Unidad 2</span><h2>Cráneo</h2></div>
+    <div class="key"><span class="tag">Números</span><p>Cráneo = <span class="num">22</span> huesos: neurocráneo <span class="num">8</span> + viscerocráneo <span class="num">14</span>. La cabeza completa suma <span class="num">29</span> (22 + 6 huesecillos + hioides).</p></div>
+
+    <div class="two">
+      <div class="box"><h4>Neurocráneo · 8 · forma la cavidad craneal y protege el encéfalo</h4>
+        <p><b>Impares (4):</b> frontal, occipital, esfenoides, etmoides.<br><b>Pares (2×2):</b> parietales, temporales.</p>
+        <p class="mn">“FOPETE”: Frontal, Occipital, Parietales, Esfenoides, Temporales, Etmoides. Los pares son los de los lados: Parietales y Temporales.</p></div>
+      <div class="box"><h4>Viscerocráneo · 14 · esqueleto de la cara</h4>
+        <p><b>Impares (2):</b> vómer y mandíbula.<br><b>Pares (6×2):</b> maxilares, cigomáticos, nasales, lagrimales, palatinos, cornetes nasales inferiores.</p>
+        <p class="mn">Pares: “Mi Cine Nuevo Les Pone Cortinas”. Impares: “VM” (Vómer, Mandíbula).</p></div>
+    </div>
+
+    <div class="block"><h3>Los 6 huesos del neurocráneo</h3>
+      <div class="tbl"><table>
+        <tr><th>Hueso</th><th>Ubicación</th><th>Lo que debes reconocer</th><th>Dato clave</th></tr>
+        <tr><td><b>Frontal</b> (impar)</td><td>Anterior</td><td>Escama frontal, arco superciliar, glabela, apófisis cigomática, porción nasal; porciones escamosa, orbitarias y nasal</td><td>Forma la frente y el techo de las órbitas. Contiene los <b>senos frontales</b> (aligeran el cráneo y dan resonancia a la voz).</td></tr>
+        <tr><td><b>Parietales</b> (par)</td><td>Superior y lateral de la bóveda</td><td>Caras externa e interna; bordes sagital, frontal y occipital; ángulo mastoideo</td><td>Se unen en la línea media por la <b>sutura sagital</b>. Articulan con frontal, occipital, temporal y el parietal opuesto.</td></tr>
+        <tr><td><b>Occipital</b> (impar)</td><td>Posterior e inferior</td><td>Escama occipital, <b>foramen magno</b>, <b>cóndilos occipitales</b></td><td>Por el foramen magno pasa el tronco encefálico hacia la médula espinal. Gran parte de la base del cráneo.</td></tr>
+        <tr><td><b>Temporales</b> (par)</td><td>Lateral e inferior</td><td>Porciones escamosa, petrosa, mastoidea y timpánica; procesos <b>mastoideo</b> y <b>estiloides</b>; meato acústico externo; <b>fosa glenoidea</b></td><td>Alojan el oído medio e interno. La fosa glenoidea recibe la mandíbula: <b>articulación temporomandibular</b>.</td></tr>
+        <tr><td><b>Esfenoides</b> (impar)</td><td>Centro de la base</td><td>Cuerpo, alas menores y mayores, procesos pterigoides, <b>silla turca</b>, agujeros óptico, oval y espinoso; senos esfenoidales</td><td>Pieza central de la base: articula con la mayoría de los huesos craneales y forma parte de las órbitas.</td></tr>
+        <tr><td><b>Etmoides</b> (impar)</td><td>Anterior de la base</td><td><b>Lámina cribosa</b>, <b>crista galli</b>, lámina perpendicular, celdillas etmoidales; liviano y esponjoso</td><td>Forma tabique nasal, cavidad nasal y órbitas. Por la lámina cribosa pasan los <b>nervios olfatorios</b>.</td></tr>
+      </table></div>
+    </div>
+
+    <div class="two">
+      <div class="block"><h3>Suturas del cráneo</h3>
+        <p class="small">Uniones fibrosas e inmóviles entre los huesos del cráneo.</p>
+        <div class="tbl"><table>
+          <tr><th>Sutura</th><th>Une</th></tr>
+          <tr><td><b>Coronal</b></td><td>Frontal con parietales (diente de sierra)</td></tr>
+          <tr><td><b>Sagital</b></td><td>Parietal con parietal, en la línea media. <b>La más larga</b></td></tr>
+          <tr><td><b>Lambdoidea</b></td><td>Parietales con occipital (diente de sierra, forma de λ)</td></tr>
+          <tr><td><b>Escamosa</b></td><td>Porción escamosa del temporal con el parietal</td></tr>
+        </table></div>
+        <p class="mn">La coronal va donde iría una corona; la sagital, como una flecha (sagitta) de adelante atrás; la lambdoidea tiene forma de letra lambda.</p>
+      </div>
+      <div class="block"><h3>Cavidades</h3>
+        <ul class="tight">
+          <li><b>Craneal:</b> encéfalo (cerebro, cerebelo, tronco encefálico).</li>
+          <li><b>Orbitarias:</b> globos oculares, músculos extraoculares, nervios, vasos y glándulas lagrimales.</li>
+          <li><b>Nasal:</b> respiración, olfato y fonación; comunica con los senos paranasales.</li>
+          <li><b>Oral:</b> masticación, deglución, fonación y expresión facial.</li>
+        </ul>
+        <p><b>Funciones del cráneo:</b> protección, soporte, masticación, respiración y alojar órganos sensoriales (visión, olfato, audición, gusto).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 ESQUELETO -->
+  <section class="unit" id="esqueleto">
+    <div class="unit-head"><span class="eyebrow">Unidad 3</span><h2>Esqueleto: tórax y miembros</h2></div>
+
+    <div class="block"><h3>Caja torácica</h3>
+      <p>Posterior: columna torácica. Anterior: esternón y cartílagos costales. Lateral: costillas y cartílagos costales. Funciones: protección, soporte y participación mecánica en la respiración. Protege pulmones y corazón, y en parte hígado, bazo, suprarrenales, parte superior del estómago y riñones.</p>
+      <div class="two">
+        <div class="box"><h4>Esternón</h4><p>Hueso plano, anterior y medio. Tres partes de arriba abajo: <b>manubrio → cuerpo → proceso xifoides</b>.</p><p>Accidentes: incisura yugular (arriba al centro), incisuras claviculares, incisuras costales y <b>ángulo esternal</b> (unión manubrio-cuerpo).</p></div>
+        <div class="box"><h4>Costilla típica</h4><p><b>Extremo posterior:</b> cabeza, cuello, tubérculo.<br><b>Cuerpo:</b> ángulo costal, caras externa e interna, bordes superior e inferior, <b>surco costal</b>.<br><b>Extremo anterior:</b> se continúa con el cartílago costal.</p></div>
+      </div>
+      <div class="tbl"><table>
+        <tr><th>Costillas (12 pares)</th><th>Pares</th><th>Cómo llegan al esternón</th></tr>
+        <tr><td><b>Verdaderas</b></td><td class="num">1–7</td><td>Directamente, por su propio cartílago costal</td></tr>
+        <tr><td><b>Falsas</b></td><td class="num">8–10</td><td>Indirectamente: su cartílago se une al de la costilla de arriba</td></tr>
+        <tr><td><b>Flotantes</b></td><td class="num">11–12</td><td>No llegan; terminan libres en la musculatura</td></tr>
+      </table></div>
+      <p class="small">Cartílagos costales: prolongan las costillas hacia adelante y dan elasticidad a la pared torácica.</p>
+    </div>
+
+    <div class="block"><h3>Miembro superior</h3>
+      <p><b>Cintura pectoral:</b> clavícula y escápula. <b>Miembro libre:</b> brazo (húmero), antebrazo (radio y ulna), mano (carpo, metacarpo, falanges).</p>
+      <div class="tbl"><table>
+        <tr><th>Hueso</th><th>Partes y accidentes</th><th>Clave</th></tr>
+        <tr><td><b>Clavícula</b></td><td>Hueso largo horizontal. Extremo <b>esternal = medial</b>; extremo <b>acromial = lateral</b></td><td>Separa el miembro del tórax y transmite fuerzas al esqueleto axial</td></tr>
+        <tr><td><b>Escápula</b></td><td>Plano y triangular. Espina, <b>acromion</b>, <b>proceso coracoides</b>, <b>cavidad glenoidea</b>; fosas supraespinosa e infraespinosa (cara posterior) y subescapular (cara anterior o costal)</td><td>Articula con húmero, clavícula y caja torácica</td></tr>
+        <tr><td><b>Húmero</b></td><td>Proximal: cabeza, cuello anatómico, tubérculos mayor y menor, <b>cuello quirúrgico</b>. Cuerpo: <b>tuberosidad deltoidea</b>, <b>surco del nervio radial</b>. Distal: <b>tróclea</b>, <b>capítulo</b>, epicóndilos</td><td>Arriba con escápula; abajo con radio y ulna</td></tr>
+        <tr><td><b>Radio</b></td><td>Cabeza proximal, tuberosidad radial, proceso estiloides distal</td><td><b>Lateral</b>, del lado del pulgar</td></tr>
+        <tr><td><b>Cúbito (ulna)</b></td><td><b>Olécranon</b>, proceso coronoides, incisura troclear, cabeza y proceso estiloides distal</td><td><b>Medial</b></td></tr>
+      </table></div>
+      <div class="key"><span class="tag">Pronación y supinación</span><p><b>Supinación:</b> palma hacia adelante, radio y cúbito paralelos (posición anatómica). <b>Pronación:</b> palma hacia atrás, radio y cúbito <b>se cruzan</b>.</p></div>
+      <div class="two">
+        <div class="box"><h4>Mano · 27 huesos</h4>
+          <p>Carpo <span class="num">8</span> + metacarpo <span class="num">5</span> + falanges <span class="num">14</span>. El pulgar tiene 2 falanges; los demás dedos, 3.</p>
+          <p><b>Fila proximal</b> (lateral → medial): escafoides, semilunar, piramidal, pisiforme.<br><b>Fila distal</b> (lateral → medial): trapecio, trapezoide, grande, ganchoso.</p>
+          <p class="mn">“Escapó Sola la Pirámide Pisando el Trapecio y el Trapezoide con un Gran Gancho.”</p></div>
+        <div class="box"><h4>Pie · 26 huesos</h4>
+          <p>Tarso <span class="num">7</span> + metatarso <span class="num">5</span> + falanges <span class="num">14</span>. El hallux (dedo gordo) solo tiene falange proximal y distal.</p>
+          <p><b>Tarso:</b> talus (astrágalo), calcáneo, navicular, cuboides, cuneiformes medial, intermedio y lateral.</p>
+          <p class="mn">“Tal Cual Navega el Cubo con 3 Cuñas.”</p></div>
+      </div>
+    </div>
+
+    <div class="block"><h3>Miembro inferior</h3>
+      <p><b>Cintura pélvica:</b> huesos coxales. <b>Miembro libre:</b> muslo (fémur), rodilla (patela), pierna (tibia y peroné/fíbula), pie (tarso, metatarso, falanges). Especializado en soporte del peso, estabilidad y locomoción.</p>
+      <div class="tbl"><table>
+        <tr><th>Hueso</th><th>Partes y accidentes</th><th>Clave</th></tr>
+        <tr><td><b>Coxal</b></td><td><b>Ilion + isquion + pubis</b>, que convergen en el <b>acetábulo</b>. Cresta ilíaca, espinas ilíacas (anterosuperior, anteroinferior, posterosuperior, posteroinferior), <b>foramen obturado</b>, tuberosidad isquiática, sínfisis púbica</td><td>Articula con sacro y fémur; transmite el peso al esqueleto axial; protege vísceras pélvicas</td></tr>
+        <tr><td><b>Fémur</b></td><td>Proximal: cabeza, cuello, <b>trocánter mayor y menor</b>. Diáfisis: <b>línea áspera</b> (cara posterior). Distal: cóndilos medial y lateral, epicóndilos, fosa intercondílea, cara patelar</td><td><b>El hueso más largo, resistente y fuerte.</b> Arriba con coxal; abajo con tibia y patela</td></tr>
+        <tr><td><b>Patela</b></td><td>Base superior, vértice inferior; su cara posterior articula con la cara patelar del fémur</td><td><b>Hueso sesamoideo</b> del aparato extensor de la rodilla; aumenta el brazo de palanca del cuádriceps</td></tr>
+        <tr><td><b>Tibia</b></td><td>Cóndilos medial y lateral, <b>tuberosidad tibial</b>, borde anterior, <b>maléolo medial</b></td><td><b>Medial</b>, principal transmisor del peso. Su cara subcutánea la hace palpable y vulnerable a golpes</td></tr>
+        <tr><td><b>Fíbula (peroné)</b></td><td>Cabeza proximal, <b>maléolo lateral</b></td><td><b>Lateral</b> y más delgada; estabiliza el tobillo e inserta músculos</td></tr>
+      </table></div>
+      <p class="mn">Maléolos: Medial = tibia (la gruesa va por dentro). Lateral = fíbula.</p>
+    </div>
+  </section>
+
+  <!-- 4 ARTICULACIONES -->
+  <section class="unit" id="articulaciones">
+    <div class="unit-head"><span class="eyebrow">Unidad 4</span><h2>Articulaciones (artrología)</h2></div>
+    <p><b>Articulación:</b> unión entre dos o más elementos del esqueleto. Se diferencian por el tejido que las une, si tienen o no cavidad articular, la forma de sus superficies y el grado de movimiento.</p>
+    <p><b>Funciones (6):</b> mantener unidos los huesos, dar estabilidad, permitir movimiento, transmitir cargas, amortiguar fuerzas y facilitar posturas y desplazamientos.</p>
+
+    <div class="key"><span class="tag">La pregunta central del tema</span><p>¿Cómo explica su estructura el movimiento que permite y la estabilidad que necesita? <b>A mayor movilidad, mayor necesidad de estabilizadores</b> (congruencia de superficies, cápsula, ligamentos, tono muscular, forma del hueso). Las poco móviles tienen gran estabilidad intrínseca.</p></div>
+
+    <div class="block"><h3>Los 3 grupos</h3>
+      <div class="tbl"><table>
+        <tr><th></th><th>Fibrosas</th><th>Cartilaginosas</th><th>Sinoviales</th></tr>
+        <tr><td><b>Unidas por</b></td><td>Tejido conectivo fibroso</td><td>Cartílago</td><td>Cápsula; tienen cavidad articular</td></tr>
+        <tr><td><b>Cavidad</b></td><td>No</td><td>No</td><td>Sí, con líquido sinovial</td></tr>
+        <tr><td><b>Movilidad</b></td><td>Nula o muy limitada</td><td>Limitada</td><td>Amplia</td></tr>
+        <tr><td><b>Función</b></td><td>Unión fuerte y estabilidad</td><td>Resistencia, amortiguación, algo de movimiento</td><td>Movimientos variados con estabilidad</td></tr>
+        <tr><td><b>Ejemplos</b></td><td>Suturas, sindesmosis, membrana interósea, gonfosis</td><td>Placa epifisaria, discos intervertebrales, sínfisis del pubis, unión esternocostal</td><td>Hombro, codo, cadera, rodilla, tobillo</td></tr>
+      </table></div>
+      <p class="small">Clasificación por movilidad que aparece en la clase: <b>sinartrosis</b> (inmóvil: sutura, gonfosis), <b>anfiartrosis</b> (poco móvil: sindesmosis, membrana interósea, sínfisis). Las sinoviales, que se mueven libremente, se llaman diartrosis.</p>
+    </div>
+
+    <div class="two">
+      <div class="box"><h4>Fibrosas: 4 formas</h4>
+        <ul class="tight">
+          <li><b>Suturas:</b> entre huesos del cráneo.</li>
+          <li><b>Sindesmosis:</b> fibras largas organizadas como ligamentos; algo de movimiento. Ej.: <b>tibiofibular</b> (distal).</li>
+          <li><b>Membrana interósea:</b> hoja de tejido conectivo entre dos huesos. Ej.: <b>radio–cúbito</b>.</li>
+          <li><b>Gonfosis:</b> una “clavija” fija en una cavidad por fibras cortas. Ej.: <b>raíz del diente–alvéolo</b> (ligamento periodontal).</li>
+        </ul></div>
+      <div class="box"><h4>Tipos de sutura (por la forma de los bordes)</h4>
+        <ul class="tight">
+          <li><b>Plana:</b> bordes casi planos. Ej.: huesos nasales.</li>
+          <li><b>Escamosa:</b> bordes cortados en bisel. Ej.: unión temporoparietal.</li>
+          <li><b>Dentada:</b> bordes con dentelladuras. Ej.: sutura coronal.</li>
+          <li><b>Esquindilesis:</b> una cresta entra en una ranura. Ej.: vómer y esfenoides.</li>
+        </ul></div>
+    </div>
+
+    <div class="two">
+      <div class="box"><h4>Cartilaginosas: sincondrosis</h4><p><b>Cartílago hialino.</b> Ejemplos: unión esternocostal (1.ª costilla con el manubrio) y la <b>placa epifisaria</b>, que es temporal y luego se osifica.</p></div>
+      <div class="box"><h4>Cartilaginosas: sínfisis</h4><p><b>Fibrocartílago</b> entre las superficies. Ejemplos: <b>discos intervertebrales</b>, <b>sínfisis del pubis</b>, sínfisis manubrioesternal. Una sola se mueve poco; muchas juntas (columna) dan movilidad, resistencia y absorción de choques.</p></div>
+    </div>
+    <p class="mn">Sin-<b>condr</b>osis = cartílago <b>hialino</b>. Sín<b>fi</b>sis = <b>fi</b>brocartílago.</p>
+
+    <div class="block"><h3>Articulación sinovial: 7 componentes</h3>
+      <div class="tbl"><table>
+        <tr><th>Componente</th><th>Qué es o qué hace</th></tr>
+        <tr><td><b>Superficies articulares</b></td><td>Extremos óseos que se relacionan entre sí</td></tr>
+        <tr><td><b>Cartílago articular</b></td><td>Cartílago <b>hialino</b> que recubre las superficies y reduce la fricción</td></tr>
+        <tr><td><b>Cápsula articular</b></td><td>Envoltura que rodea la articulación. Capa <b>fibrosa externa</b> (tejido conectivo denso: resistencia y estabilidad) + <b>membrana sinovial interna</b></td></tr>
+        <tr><td><b>Cavidad articular</b></td><td>Espacio que contiene el líquido sinovial</td></tr>
+        <tr><td><b>Membrana sinovial</b></td><td>Capa interna que <b>produce el líquido sinovial</b>; rica en vasos y nervios</td></tr>
+        <tr><td><b>Líquido sinovial</b></td><td>Lubrica, <b>nutre el cartílago</b> y amortigua</td></tr>
+        <tr><td><b>Ligamentos</b></td><td>Refuerzan la estabilidad</td></tr>
+      </table></div>
+      <p class="small">Estructuras complementarias según la articulación: discos articulares, meniscos, rodetes articulares y bolsas sinoviales.</p>
+      <div class="two">
+        <div class="box"><h4>Cartílago articular</h4><p>Liso y de baja fricción; distribuye cargas y protege los extremos óseos. <b>No tiene vasos, nervios ni linfáticos</b>: se nutre por <b>difusión desde el líquido sinovial</b>.</p><p class="small">Zonas: superficial (células aplanadas, resiste fricción) · media (redondeadas, amortigua) · profunda (en columnas, unida al hueso subcondral).</p></div>
+        <div class="box"><h4>Ligamentos</h4><p>Tejido conectivo que estabiliza, orienta el movimiento, limita desplazamientos y refuerza la cápsula. Tipos: <b>capsulares</b>, <b>extracapsulares</b> e <b>intracapsulares</b> (los cruzados de la rodilla).</p><p class="small">Esguince: grado I = distensión sin ruptura · grado II = ruptura parcial · grado III = ruptura completa. Ejemplo típico: ligamento talofibular anterior del tobillo.</p></div>
+      </div>
+    </div>
+
+    <div class="block"><h3>Tipos de articulación sinovial</h3>
+      <div class="tbl"><table>
+        <tr><th>Tipo</th><th>Forma</th><th>Ejemplo</th><th>Movimiento</th><th>Ejes</th></tr>
+        <tr><td><b>Plana</b></td><td>Superficies planas</td><td>Intercarpianas</td><td>Deslizamiento</td><td class="num">—</td></tr>
+        <tr><td><b>Troclear</b> (bisagra)</td><td>Polea en una cavidad</td><td>Codo (humerocubital)</td><td>Flexión y extensión</td><td class="num">1</td></tr>
+        <tr><td><b>Trocoide</b> (pivote)</td><td>Cilindro que gira en un anillo</td><td>Atlantoaxoidea mediana</td><td>Rotación</td><td class="num">1</td></tr>
+        <tr><td><b>Elipsoidea</b> (condiloide)</td><td>Superficies ovaladas</td><td>Radiocarpiana (muñeca)</td><td>Flexión, extensión, abducción, aducción</td><td class="num">2</td></tr>
+        <tr><td><b>Selar</b> (silla de montar)</td><td>Dos sillas perpendiculares</td><td>Carpometacarpiana del pulgar</td><td>Flexión, extensión, abducción, aducción</td><td class="num">2</td></tr>
+        <tr><td><b>Esferoidea</b></td><td>Esfera en una cavidad</td><td>Cadera (coxofemoral), hombro</td><td>Todos, incluida rotación y <b>circunducción</b></td><td class="num">3</td></tr>
+      </table></div>
+      <p class="small">Una diapositiva añade las <b>condíleas</b> como séptimo tipo; la rodilla se describe como sinovial modificada <b>bicondílea</b>.</p>
+    </div>
+
+    <div class="block"><h3>Movimientos</h3>
+      <div class="tbl"><table>
+        <tr><th>Movimiento</th><th>Definición</th><th>Ejemplo</th></tr>
+        <tr><td><b>Flexión</b></td><td>Disminuye el ángulo entre segmentos</td><td>Doblar el codo</td></tr>
+        <tr><td><b>Extensión</b></td><td>Aumenta el ángulo entre segmentos</td><td>Estirar el codo</td></tr>
+        <tr><td><b>Abducción</b></td><td>Aleja del plano mediano</td><td>Separar el brazo del cuerpo</td></tr>
+        <tr><td><b>Aducción</b></td><td>Acerca al plano mediano</td><td>Pegar el brazo al cuerpo</td></tr>
+        <tr><td><b>Rotación</b></td><td>Giro alrededor del eje longitudinal</td><td>Girar la cabeza</td></tr>
+        <tr><td><b>Circunducción</b></td><td>El extremo distal dibuja un círculo</td><td>Hombro</td></tr>
+      </table></div>
+      <p class="mn">AB-ducción = Aleja (como “abrir”). AD-ducción = Acerca (“añadir” al cuerpo).</p>
+      <p class="small">Peinarse combina abducción, flexión y rotación del hombro.</p>
+    </div>
+
+    <div class="block"><h3>Articulaciones por región</h3>
+      <div class="two">
+        <div class="box"><h4>Columna vertebral</h4><ul class="tight">
+          <li><b>Discos intervertebrales:</b> núcleo pulposo + anillo fibroso; amortiguan y reparten carga.</li>
+          <li><b>Cigapofisarias:</b> <b>sinoviales</b> entre procesos articulares; guían el movimiento.</li>
+          <li><b>Lig. longitudinal anterior:</b> cara anterior de los cuerpos. <b>Posterior:</b> dentro del conducto vertebral.</li>
+          <li><b>Lig. amarillos:</b> unen láminas; fibras <b>elásticas</b>, regresan la columna tras la flexión.</li>
+          <li><b>Interespinosos</b> (entre procesos espinosos) y <b>supraespinoso</b> (por la punta, varios niveles): limitan la flexión.</li></ul></div>
+        <div class="box"><h4>Cráneo y columna</h4><ul class="tight">
+          <li><b>Atlantooccipital</b> (occipital–C1): flexión y extensión, el movimiento de decir <b>“sí”</b>.</li>
+          <li><b>Atlantoaxoidea</b> (C1–C2): rotación, el movimiento de decir <b>“no”</b>.</li>
+          <li>Ligamentos: transverso del atlas, alares, cruciforme y membrana tectoria.</li>
+          <li>Su estabilidad protege el tronco encefálico y la médula espinal.</li></ul></div>
+        <div class="box"><h4>Tórax</h4><ul class="tight">
+          <li><b>Costovertebrales:</b> cabeza de la costilla con cuerpos vertebrales y disco. <b>Costotransversa:</b> tubérculo con proceso transverso.</li>
+          <li><b>Esternocostal</b> de la 1.ª costilla con el manubrio; <b>esternocostales</b> 2.ª–7.ª con el cuerpo.</li>
+          <li><b>Intercondrales:</b> entre cartílagos vecinos (6.ª–9.ª).</li>
+          <li><b>Sínfisis manubrioesternal</b> y <b>xifoesternal</b> (a menudo osificada en el adulto).</li>
+          <li>Movimientos pequeños, pero esenciales para la respiración.</li></ul></div>
+        <div class="box"><h4>Miembro inferior</h4><ul class="tight">
+          <li><b>Cadera:</b> sinovial esferoidea; muy estable, carga gran parte del peso.</li>
+          <li><b>Rodilla:</b> sinovial modificada bicondílea; flexión y extensión con ligera rotación.</li>
+          <li><b>Tibiofibular proximal:</b> sinovial plana. <b>Distal:</b> sindesmosis.</li>
+          <li><b>Talocrural</b> (tobillo): sinovial troclear; flexión y extensión del pie.</li>
+          <li>Pelvis: <b>sacroilíacas</b> atrás y <b>sínfisis del pubis</b> adelante.</li></ul></div>
+      </div>
+    </div>
+
+    <div class="block"><h3>Actividad de clase, resuelta</h3>
+      <div class="tbl"><table>
+        <tr><th>Articulación</th><th>Tipo</th><th>Movimiento</th><th>Función principal</th></tr>
+        <tr><td>Sutura coronal</td><td>Fibrosa (sutura dentada), sinartrosis</td><td>Prácticamente ninguno</td><td>Unir los huesos y proteger el encéfalo</td></tr>
+        <tr><td>Disco intervertebral</td><td>Cartilaginosa (sínfisis), anfiartrosis</td><td>Limitado (flexión, inclinación)</td><td>Amortiguar y repartir cargas</td></tr>
+        <tr><td>Hombro (glenohumeral)</td><td>Sinovial esferoidea</td><td>Flexión, extensión, abducción, aducción, rotación, circunducción</td><td>Máxima movilidad del brazo</td></tr>
+        <tr><td>Codo (humerocubital)</td><td>Sinovial troclear</td><td>Flexión y extensión</td><td>Acercar y alejar la mano del cuerpo</td></tr>
+        <tr><td>Cadera (coxofemoral)</td><td>Sinovial esferoidea</td><td>En tres ejes, con circunducción</td><td>Soportar el peso con estabilidad</td></tr>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- CIFRAS -->
+  <section class="unit" id="cifras">
+    <div class="unit-head"><span class="eyebrow">Para memorizar</span><h2>Cifras clave</h2></div>
+    <div class="figs">
+      <div class="fig"><span class="n">206</span><span class="l">huesos del adulto</span></div>
+      <div class="fig"><span class="n">80</span><span class="l">esqueleto axial</span></div>
+      <div class="fig"><span class="n">126</span><span class="l">esqueleto apendicular</span></div>
+      <div class="fig"><span class="n">22</span><span class="l">cráneo (8 + 14)</span></div>
+      <div class="fig"><span class="n">29</span><span class="l">cabeza completa (+6 oído +1 hioides)</span></div>
+      <div class="fig"><span class="n">26</span><span class="l">columna vertebral</span></div>
+      <div class="fig"><span class="n">25</span><span class="l">caja torácica (24 + esternón)</span></div>
+      <div class="fig"><span class="n">12</span><span class="l">pares de costillas (7 · 3 · 2)</span></div>
+      <div class="fig"><span class="n">27</span><span class="l">huesos de la mano (8 · 5 · 14)</span></div>
+      <div class="fig"><span class="n">26</span><span class="l">huesos del pie (7 · 5 · 14)</span></div>
+      <div class="fig"><span class="n">7</span><span class="l">componentes de la sinovial</span></div>
+      <div class="fig"><span class="n">6</span><span class="l">tipos de sinovial</span></div>
+    </div>
+  </section>
+
+  <!-- OJO -->
+  <section class="unit" id="ojo" style="border-bottom:0">
+    <div class="unit-head"><span class="eyebrow">Antes del examen</span><h2>Ojo con esto</h2></div>
+    <div class="trap"><span class="tag">Las diapositivas no coinciden</span><p>En la clase de <b>cráneo</b>, la sutura escamosa se describe como “sutura plana”. En la de <b>articulaciones</b>, la escamosa es un tipo propio (bordes en bisel, temporoparietal) y “plana” es la de los huesos nasales. Si te preguntan tipos de sutura, usa la versión de articulaciones. Si puedes, confírmalo con la doctora.</p></div>
+    <div class="trap"><span class="tag">Confusiones típicas</span>
+      <ul class="tight">
+        <li>Sincondrosis (hialino) vs. sínfisis (fibrocartílago).</li>
+        <li>Costillas falsas (8–10, llegan indirectamente) vs. flotantes (11–12, no llegan).</li>
+        <li>Radio = lateral (pulgar); cúbito = medial. Tibia = medial; fíbula = lateral.</li>
+        <li>Fosa <b>glenoidea</b> del temporal (mandíbula) vs. cavidad <b>glenoidea</b> de la escápula (húmero).</li>
+        <li>Cuello anatómico vs. cuello quirúrgico del húmero (el quirúrgico está más abajo, bajo los tubérculos).</li>
+        <li>Plano frontal = coronal; plano transversal = horizontal = axial.</li>
+        <li>Atlantooccipital = “sí”; atlantoaxoidea = “no”.</li>
+      </ul></div>
+    <div class="key"><span class="tag">Repaso con imágenes</span><p>Este resumen es de texto. Para identificar huesos y accidentes en dibujos, vuelve a las láminas de las diapositivas y tapa las etiquetas: nombra cada estructura antes de mirar.</p></div>
+  </section>
+</div>
+
+<!-- ===================== TARJETAS ===================== -->
+<div id="panel-tarjetas" role="tabpanel" aria-labelledby="tab-tarjetas" hidden>
+  <div class="toolbar" id="fc-filters" aria-label="Filtrar por unidad"></div>
+  <div class="toolbar"><span class="small">Responde en voz alta antes de voltear. Teclado: espacio = voltear, 1 = la sabía, 2 = repasar.</span><span class="progress" id="fc-progress"></span></div>
+  <div class="bar"><i id="fc-bar"></i></div>
+  <div id="fc-stage"></div>
+</div>
+
+<!-- ===================== EXAMEN ===================== -->
+<div id="panel-examen" role="tabpanel" aria-labelledby="tab-examen" hidden>
+  <div class="toolbar" id="qz-filters" aria-label="Filtrar por unidad"></div>
+  <div class="toolbar"><span class="small">Opción múltiple con explicación inmediata. Orden aleatorio en cada intento.</span><span class="progress" id="qz-progress"></span></div>
+  <div class="bar"><i id="qz-bar"></i></div>
+  <div id="qz-stage"></div>
+</div>
+</div>
+
+<script>
+const TOPICS = {all:'Todo', bases:'Bases y osteología', craneo:'Cráneo', esqueleto:'Esqueleto', artic:'Articulaciones'};
+
+const CARDS = [
+ {t:'bases',q:'Describe la posición anatómica.',a:'Erguido y de frente, cabeza y mirada al frente, brazos a los lados con las palmas hacia adelante, pies paralelos apuntando al frente.'},
+ {t:'bases',q:'¿Qué divide el plano sagital? ¿Y el sagital medio?',a:'Derecha e izquierda. El sagital medio pasa por la línea media y deja dos mitades iguales.'},
+ {t:'bases',q:'¿Qué divide el plano frontal o coronal?',a:'Porción anterior y posterior. Es vertical, de oreja a oreja, pasa por hombros y caderas y es perpendicular al sagital.'},
+ {t:'bases',q:'Otros dos nombres del plano transversal y qué divide.',a:'Horizontal o axial. Divide en superior (craneal) e inferior (caudal). Corresponde a los cortes axiales de TC.'},
+ {t:'bases',q:'Proximal vs. distal.',a:'Proximal: más cerca del punto de origen o unión. Distal: más lejos.'},
+ {t:'bases',q:'Ipsilateral vs. contralateral.',a:'Ipsilateral: del mismo lado del cuerpo. Contralateral: del lado opuesto.'},
+ {t:'bases',q:'Las 5 ramas de la anatomía macroscópica.',a:'Sistémica, regional, de superficie, clínica o aplicada, radiológica o por imagen.'},
+ {t:'bases',q:'Las 4 ramas de la anatomía microscópica.',a:'Histología (tejidos), citología (células), biología molecular, embriología.'},
+ {t:'bases',q:'Osificación intramembranosa: cómo es y qué huesos forma.',a:'Hueso directo del mesénquima, sin molde de cartílago. Huesos planos: cráneo y clavículas.'},
+ {t:'bases',q:'Osificación endocondral: cómo es y qué huesos forma.',a:'Un molde de cartílago hialino se reemplaza por hueso. La mayoría de los huesos, sobre todo los largos de las extremidades.'},
+ {t:'bases',q:'4 fases del crecimiento en longitud en la placa epifisaria.',a:'Proliferación de condrocitos → calcificación → osificación (entran vasos) → crecimiento.'},
+ {t:'bases',q:'Crecimiento aposicional vs. remodelación.',a:'Aposicional: osteoblastos del periostio añaden hueso en la superficie externa. Remodelación: osteoclastos en la superficie interna.'},
+ {t:'bases',q:'¿Qué hacen estrógenos y testosterona sobre el hueso?',a:'Aceleran el cierre de la placa epifisaria y favorecen la mineralización.'},
+ {t:'bases',q:'Las 6 funciones del esqueleto.',a:'Sostén, protección, movimiento, hematopoyesis, almacén de minerales (Ca y P), reserva energética (médula amarilla).'},
+ {t:'bases',q:'Desglosa los 80 huesos del esqueleto axial.',a:'Cráneo 22 + huesecillos 6 + hioides 1 + columna 26 + caja torácica 25 = 80.'},
+ {t:'craneo',q:'Huesos impares del neurocráneo.',a:'Frontal, occipital, esfenoides y etmoides.'},
+ {t:'craneo',q:'Huesos pares del neurocráneo.',a:'Parietales y temporales.'},
+ {t:'craneo',q:'Los 14 huesos del viscerocráneo.',a:'Impares: vómer y mandíbula. Pares: maxilares, cigomáticos, nasales, lagrimales, palatinos y cornetes nasales inferiores.'},
+ {t:'craneo',q:'¿Qué une la sutura coronal?',a:'El frontal con los parietales.'},
+ {t:'craneo',q:'¿Qué une la sutura sagital y qué la distingue?',a:'Los dos parietales en la línea media. Es la más larga.'},
+ {t:'craneo',q:'¿Qué une la sutura lambdoidea?',a:'Los parietales con el occipital.'},
+ {t:'craneo',q:'¿Qué une la sutura escamosa?',a:'La porción escamosa del temporal con el parietal.'},
+ {t:'craneo',q:'Frontal: 3 accidentes y su dato clave.',a:'Arco superciliar, glabela, apófisis cigomática (también escama y porción nasal). Contiene los senos frontales: aligeran el cráneo y dan resonancia a la voz.'},
+ {t:'craneo',q:'Occipital: estructuras clave.',a:'Foramen magno (paso del tronco encefálico a la médula) y cóndilos occipitales; escama occipital.'},
+ {t:'craneo',q:'Las 4 porciones del temporal y su dato clave.',a:'Escamosa, petrosa, mastoidea y timpánica. Aloja oído medio e interno; su fosa glenoidea forma la ATM con la mandíbula.'},
+ {t:'craneo',q:'Esfenoides: partes y estructura central.',a:'Cuerpo, alas menores, alas mayores, procesos pterigoides. Silla turca en el centro; agujeros óptico, oval y espinoso.'},
+ {t:'craneo',q:'Etmoides: partes y función clave.',a:'Lámina cribosa, crista galli, lámina perpendicular, celdillas etmoidales. Por la lámina cribosa pasan los nervios olfatorios.'},
+ {t:'craneo',q:'¿Qué alojan las cavidades orbitarias?',a:'Globos oculares, músculos extraoculares, nervios, vasos y glándulas lagrimales.'},
+ {t:'esqueleto',q:'Partes del esternón de arriba abajo.',a:'Manubrio → cuerpo → proceso xifoides.'},
+ {t:'esqueleto',q:'4 accidentes del esternón.',a:'Incisura yugular, incisuras claviculares, incisuras costales, ángulo esternal.'},
+ {t:'esqueleto',q:'Clasificación de las costillas.',a:'Verdaderas 1–7 (directo al esternón), falsas 8–10 (al cartílago de arriba), flotantes 11–12 (libres).'},
+ {t:'esqueleto',q:'Partes de una costilla típica.',a:'Extremo posterior: cabeza, cuello, tubérculo. Cuerpo: ángulo costal, caras, bordes, surco costal. Extremo anterior: cartílago costal.'},
+ {t:'esqueleto',q:'Extremos de la clavícula.',a:'Esternal = medial. Acromial = lateral.'},
+ {t:'esqueleto',q:'7 accidentes de la escápula.',a:'Espina, acromion, proceso coracoides, cavidad glenoidea, fosas supraespinosa, infraespinosa y subescapular.'},
+ {t:'esqueleto',q:'Húmero: partes del extremo proximal.',a:'Cabeza, cuello anatómico, tubérculos mayor y menor, cuello quirúrgico.'},
+ {t:'esqueleto',q:'Húmero: cuerpo y extremo distal.',a:'Cuerpo: tuberosidad deltoidea y surco del nervio radial. Distal: tróclea, capítulo, epicóndilos.'},
+ {t:'esqueleto',q:'Radio vs. cúbito: posición y accidentes.',a:'Radio lateral (pulgar): cabeza, tuberosidad radial, estiloides. Cúbito medial: olécranon, coronoides, incisura troclear, cabeza y estiloides.'},
+ {t:'esqueleto',q:'Huesos del carpo en orden.',a:'Proximal: escafoides, semilunar, piramidal, pisiforme. Distal: trapecio, trapezoide, grande, ganchoso.'},
+ {t:'esqueleto',q:'Componentes del coxal y dónde convergen.',a:'Ilion, isquion y pubis; convergen en el acetábulo.'},
+ {t:'esqueleto',q:'Fémur: accidentes por región.',a:'Proximal: cabeza, cuello, trocánter mayor y menor. Diáfisis: línea áspera. Distal: cóndilos, epicóndilos, fosa intercondílea, cara patelar.'},
+ {t:'esqueleto',q:'¿Qué tipo de hueso es la patela y qué función tiene?',a:'Sesamoideo del aparato extensor de la rodilla. Protege la rodilla y aumenta el brazo de palanca del cuádriceps.'},
+ {t:'esqueleto',q:'Tibia vs. fíbula.',a:'Tibia: medial, transmite el peso, tuberosidad tibial, maléolo medial. Fíbula: lateral, delgada, maléolo lateral, estabiliza el tobillo.'},
+ {t:'esqueleto',q:'Los 7 huesos del tarso.',a:'Talus, calcáneo, navicular, cuboides y cuneiformes medial, intermedio y lateral.'},
+ {t:'artic',q:'Las 4 formas de articulación fibrosa con ejemplo.',a:'Suturas (cráneo), sindesmosis (tibiofibular), membrana interósea (radio–cúbito), gonfosis (diente–alvéolo).'},
+ {t:'artic',q:'Los 4 tipos de sutura con ejemplo.',a:'Plana (nasales), escamosa (temporoparietal), dentada (coronal), esquindilesis (vómer–esfenoides).'},
+ {t:'artic',q:'Sincondrosis vs. sínfisis.',a:'Sincondrosis: cartílago hialino (esternocostal, placa epifisaria). Sínfisis: fibrocartílago (discos intervertebrales, pubis, manubrioesternal).'},
+ {t:'artic',q:'Los 7 componentes de una articulación sinovial.',a:'Superficies articulares, cartílago articular, cápsula, cavidad, membrana sinovial, líquido sinovial, ligamentos.'},
+ {t:'artic',q:'¿Cómo se nutre el cartílago articular y por qué?',a:'Por difusión desde el líquido sinovial, porque no tiene vasos, nervios ni linfáticos.'},
+ {t:'artic',q:'Capas de la cápsula articular.',a:'Fibrosa externa (tejido conectivo denso, resistencia y estabilidad) y membrana sinovial interna (produce líquido sinovial).'},
+ {t:'artic',q:'3 tipos de ligamentos según la cápsula.',a:'Capsulares, extracapsulares e intracapsulares (los cruzados de la rodilla).'},
+ {t:'artic',q:'Grados de esguince.',a:'I: distensión sin ruptura. II: ruptura parcial. III: ruptura completa.'},
+ {t:'artic',q:'Los 6 tipos de sinovial con ejemplo.',a:'Plana (intercarpianas), troclear (codo), trocoide (atlantoaxoidea), elipsoidea (radiocarpiana), selar (carpometacarpiana del pulgar), esferoidea (cadera).'},
+ {t:'artic',q:'Abducción vs. aducción.',a:'Abducción: aleja del plano mediano. Aducción: acerca al plano mediano.'},
+ {t:'artic',q:'Atlantooccipital vs. atlantoaxoidea.',a:'Atlantooccipital: flexión y extensión (“sí”). Atlantoaxoidea: rotación (“no”).'},
+ {t:'artic',q:'Función de los ligamentos amarillos.',a:'Unen las láminas vertebrales; sus fibras elásticas regresan la columna a su posición tras la flexión.'},
+ {t:'artic',q:'Tipo de articulación: rodilla, talocrural y tibiofibulares.',a:'Rodilla: sinovial bicondílea. Talocrural: sinovial troclear. Tibiofibular proximal: sinovial plana; distal: sindesmosis.'},
+ {t:'artic',q:'Relación movilidad–estabilidad.',a:'A mayor movilidad, mayor necesidad de estabilizadores. Las articulaciones poco móviles tienen gran estabilidad intrínseca.'},
+];
+
+// o[0] is always the correct option; options are shuffled when shown.
+const QUIZ = [
+ {t:'bases',q:'¿Qué plano divide el cuerpo en una porción anterior y otra posterior?',o:['Frontal o coronal','Sagital','Transversal','Oblicuo'],e:'El frontal o coronal va de oreja a oreja y separa lo de adelante de lo de atrás.'},
+ {t:'bases',q:'El plano sagital medio se caracteriza por…',o:['Dividir el cuerpo en mitades derecha e izquierda iguales','Dividir en superior e inferior','Pasar por ambos hombros y caderas','Cortar el cuerpo en diagonal'],e:'Es el sagital que pasa exactamente por la línea media.'},
+ {t:'bases',q:'Los cortes axiales de una tomografía corresponden al plano…',o:['Transversal','Sagital','Frontal','Oblicuo'],e:'Transversal = horizontal = axial.'},
+ {t:'bases',q:'En posición anatómica, las palmas de las manos miran…',o:['Hacia adelante','Hacia el muslo','Hacia atrás','Hacia abajo'],e:'Palmas hacia adelante: radio y cúbito quedan paralelos (supinación).'},
+ {t:'bases',q:'“Más lejos del punto de origen o unión” se dice…',o:['Distal','Lateral','Profundo','Inferior'],e:'Proximal es más cerca; distal, más lejos.'},
+ {t:'bases',q:'Una lesión en el lado opuesto a otra estructura es…',o:['Contralateral','Ipsilateral','Medial','Externa'],e:'Ipsilateral = mismo lado; contralateral = lado opuesto.'},
+ {t:'bases',q:'La osificación intramembranosa forma principalmente…',o:['Huesos planos como el cráneo y la clavícula','Huesos largos de las extremidades','Las vértebras','Los huesos del carpo'],e:'Se forma directo del mesénquima, sin molde de cartílago.'},
+ {t:'bases',q:'¿Dónde ocurre el crecimiento en longitud de un hueso largo?',o:['En la placa epifisaria','En el periostio','En la diáfisis','En la médula ósea'],e:'Placa epifisaria o cartílago de crecimiento, entre epífisis y metáfisis.'},
+ {t:'bases',q:'El crecimiento aposicional (en grosor) lo realizan…',o:['Los osteoblastos del periostio','Los osteoclastos','Los condrocitos de la placa','Los osteocitos de la médula'],e:'Los osteoblastos añaden capas en la superficie externa; los osteoclastos remodelan la interna.'},
+ {t:'bases',q:'Mediador principal del efecto de la GH en el cartílago de crecimiento:',o:['IGF-1','Hormonas tiroideas','Testosterona','Vitamina D'],e:'La GH actúa en el cartílago sobre todo a través del IGF-1.'},
+ {t:'bases',q:'Estrógenos y testosterona sobre la placa epifisaria…',o:['Aceleran su cierre y favorecen la mineralización','Retrasan su cierre','No tienen efecto','Estimulan solo a los osteoclastos'],e:'Por eso en la adolescencia hay máxima velocidad de crecimiento y luego la placa se cierra.'},
+ {t:'bases',q:'La reserva energética del esqueleto está en…',o:['La médula ósea amarilla','La médula ósea roja','El periostio','El cartílago articular'],e:'La médula amarilla es reserva energética; la hematopoyesis ocurre en la médula ósea.'},
+ {t:'bases',q:'¿Cuántos huesos tiene el esqueleto axial?',o:['80','126','206','64'],e:'22 + 6 + 1 + 26 + 25 = 80. El apendicular tiene 126.'},
+ {t:'craneo',q:'¿Cuál de estos NO pertenece al neurocráneo?',o:['Vómer','Etmoides','Esfenoides','Occipital'],e:'El vómer es impar del viscerocráneo, junto con la mandíbula.'},
+ {t:'craneo',q:'¿Cuántos huesos forman el viscerocráneo?',o:['14','8','22','29'],e:'2 impares (vómer, mandíbula) + 6 pares = 14.'},
+ {t:'craneo',q:'La sutura que une el frontal con los parietales es la…',o:['Coronal','Sagital','Lambdoidea','Escamosa'],e:'Coronal = frontal–parietales.'},
+ {t:'craneo',q:'La sutura más larga del cráneo, que une ambos parietales, es la…',o:['Sagital','Coronal','Lambdoidea','Escamosa'],e:'Corre por la línea media de adelante hacia atrás.'},
+ {t:'craneo',q:'La sutura lambdoidea une…',o:['Los parietales con el occipital','El frontal con los parietales','El temporal con el parietal','Los dos parietales'],e:'Tiene forma de letra lambda, en la parte posterior.'},
+ {t:'craneo',q:'El foramen magno pertenece al hueso…',o:['Occipital','Esfenoides','Temporal','Etmoides'],e:'Por él pasa el tronco encefálico para continuarse con la médula espinal.'},
+ {t:'craneo',q:'La silla turca se localiza en el…',o:['Esfenoides','Etmoides','Occipital','Frontal'],e:'En el centro del cuerpo del esfenoides.'},
+ {t:'craneo',q:'¿Por qué hueso pasan los nervios olfatorios?',o:['Etmoides, por la lámina cribosa','Esfenoides, por el agujero óptico','Frontal, por los senos frontales','Nasal'],e:'La lámina cribosa del etmoides tiene múltiples orificios para ellos.'},
+ {t:'craneo',q:'La fosa glenoidea que forma la articulación temporomandibular está en el…',o:['Temporal','Occipital','Esfenoides','Parietal'],e:'El temporal recibe a la mandíbula en su fosa glenoidea (mandibular).'},
+ {t:'craneo',q:'Los senos frontales sirven para…',o:['Aligerar el cráneo y dar resonancia a la voz','Proteger el bulbo olfatorio','Alojar el oído medio','Producir líquido cefalorraquídeo'],e:'Dato clave del hueso frontal.'},
+ {t:'craneo',q:'¿Cuántos huesos tiene la cabeza contando huesecillos del oído e hioides?',o:['29','22','28','32'],e:'22 del cráneo + 6 huesecillos + 1 hioides = 29.'},
+ {t:'esqueleto',q:'Las costillas falsas son…',o:['8.ª a 10.ª: se unen al cartílago de la costilla de arriba','1.ª a 7.ª: se unen directo al esternón','11.ª y 12.ª: terminan libres','Todas las que no tienen cartílago'],e:'Llegan al esternón de forma indirecta.'},
+ {t:'esqueleto',q:'El ángulo esternal se forma en la unión entre…',o:['Manubrio y cuerpo del esternón','Cuerpo y proceso xifoides','Clavícula y manubrio','1.ª costilla y manubrio'],e:'Es uno de los 4 accidentes importantes del esternón.'},
+ {t:'esqueleto',q:'Cabeza, cuello y tubérculo forman el ___ de una costilla.',o:['Extremo posterior','Extremo anterior','Cuerpo','Ángulo costal'],e:'El extremo anterior se continúa con el cartílago costal.'},
+ {t:'esqueleto',q:'El surco del nervio radial está en…',o:['El cuerpo del húmero','El extremo distal del radio','La escápula','El cúbito'],e:'El cuerpo del húmero tiene la tuberosidad deltoidea y el surco del nervio radial.'},
+ {t:'esqueleto',q:'El hueso medial del antebrazo, que tiene el olécranon, es el…',o:['Cúbito (ulna)','Radio','Húmero','Escafoides'],e:'El radio es lateral, del lado del pulgar.'},
+ {t:'esqueleto',q:'En pronación…',o:['La palma mira hacia atrás y radio y cúbito se cruzan','La palma mira hacia adelante y los huesos son paralelos','Solo rota el húmero','Se flexiona el codo'],e:'La supinación es la posición anatómica: palmas al frente, huesos paralelos.'},
+ {t:'esqueleto',q:'Fila proximal del carpo, de lateral a medial:',o:['Escafoides, semilunar, piramidal, pisiforme','Trapecio, trapezoide, grande, ganchoso','Semilunar, escafoides, pisiforme, piramidal','Escafoides, trapecio, semilunar, grande'],e:'“Escapó Sola la Pirámide Pisando…”'},
+ {t:'esqueleto',q:'¿Cuántos huesos tiene la mano?',o:['27','26','28','32'],e:'8 carpo + 5 metacarpo + 14 falanges. El pie tiene 26.'},
+ {t:'esqueleto',q:'Ilion, isquion y pubis convergen en…',o:['El acetábulo','El foramen obturado','La sínfisis púbica','La cresta ilíaca'],e:'El acetábulo recibe la cabeza del fémur.'},
+ {t:'esqueleto',q:'La línea áspera se encuentra en…',o:['La cara posterior de la diáfisis del fémur','La tibia','El coxal','La cara anterior del fémur'],e:'Es el accidente de la diáfisis femoral.'},
+ {t:'esqueleto',q:'La patela es un hueso…',o:['Sesamoideo del aparato extensor de la rodilla','Largo de la pierna','Plano de la cintura pélvica','Corto del tarso'],e:'Aumenta el brazo de palanca del cuádriceps.'},
+ {t:'esqueleto',q:'El maléolo lateral pertenece a…',o:['La fíbula (peroné)','La tibia','El talus','El calcáneo'],e:'El maléolo medial es de la tibia.'},
+ {t:'esqueleto',q:'¿Cuál NO es un hueso del tarso?',o:['Semilunar','Navicular','Cuboides','Calcáneo'],e:'El semilunar es del carpo (mano).'},
+ {t:'esqueleto',q:'El acromion y el proceso coracoides pertenecen a…',o:['La escápula','La clavícula','El húmero','El esternón'],e:'Junto con la espina, la cavidad glenoidea y las fosas.'},
+ {t:'artic',q:'Suturas, sindesmosis y gonfosis son articulaciones…',o:['Fibrosas','Cartilaginosas','Sinoviales','Sínfisis'],e:'Unidas por tejido conectivo fibroso, sin cavidad.'},
+ {t:'artic',q:'En una sínfisis, entre las superficies hay…',o:['Fibrocartílago','Cartílago hialino','Líquido sinovial','Tejido fibroso denso'],e:'Las sincondrosis tienen cartílago hialino.'},
+ {t:'artic',q:'Un disco intervertebral es ejemplo de…',o:['Sínfisis','Sincondrosis','Sindesmosis','Sinovial plana'],e:'Fibrocartílago entre cuerpos vertebrales.'},
+ {t:'artic',q:'La placa epifisaria es una articulación…',o:['Cartilaginosa (sincondrosis) temporal que luego se osifica','Fibrosa tipo sutura','Sinovial plana','Sínfisis permanente'],e:'Cartílago hialino que desaparece al cerrarse la placa.'},
+ {t:'artic',q:'La esquindilesis se ejemplifica con la unión entre…',o:['Vómer y esfenoides','Frontal y parietales','Huesos nasales','Temporal y parietal'],e:'Una cresta ósea se introduce en una ranura.'},
+ {t:'artic',q:'Según la clase de articulaciones, la sutura escamosa tiene…',o:['Superficies cortadas en bisel (temporoparietal)','Bordes dentados (coronal)','Superficies planas (nasales)','Una cresta en una ranura'],e:'Recuerda: la clase de cráneo la llamó “plana”; aquí es su propio tipo.'},
+ {t:'artic',q:'¿Qué estructura produce el líquido sinovial?',o:['La membrana sinovial','La capa fibrosa de la cápsula','El cartílago articular','Los ligamentos'],e:'Es la capa interna de la cápsula, rica en vasos y nervios.'},
+ {t:'artic',q:'El cartílago articular se nutre…',o:['Por difusión desde el líquido sinovial','Por sus propios vasos sanguíneos','Desde el periostio','Por los ligamentos'],e:'No tiene vasos, nervios ni linfáticos.'},
+ {t:'artic',q:'El codo (humerocubital) es una sinovial…',o:['Troclear','Trocoide','Esferoidea','Selar'],e:'Polea: flexión y extensión en un eje.'},
+ {t:'artic',q:'La articulación atlantoaxoidea mediana es…',o:['Trocoide: rotación (“no”)','Troclear: flexión (“sí”)','Plana: deslizamiento','Elipsoidea: dos ejes'],e:'Un cilindro (diente del axis) gira dentro de un anillo osteofibroso.'},
+ {t:'artic',q:'La carpometacarpiana del pulgar es…',o:['Selar','Elipsoidea','Plana','Esferoidea'],e:'Silla de montar: movimientos en dos ejes.'},
+ {t:'artic',q:'La radiocarpiana (muñeca) es…',o:['Elipsoidea','Troclear','Trocoide','Selar'],e:'Superficies ovaladas: dos ejes.'},
+ {t:'artic',q:'¿Qué tipo de sinovial permite circunducción en tres ejes?',o:['Esferoidea','Selar','Elipsoidea','Troclear'],e:'Ej.: cadera y hombro.'},
+ {t:'artic',q:'La abducción es…',o:['Alejamiento respecto del plano mediano','Acercamiento al plano mediano','Disminución del ángulo entre segmentos','Giro sobre el eje longitudinal'],e:'Aducción es acercar; flexión es disminuir el ángulo; rotación es girar.'},
+ {t:'artic',q:'Un esguince grado II corresponde a…',o:['Ruptura parcial del ligamento','Distensión sin ruptura','Ruptura completa','Luxación de la articulación'],e:'I = distensión, II = parcial, III = completa.'},
+ {t:'artic',q:'Los ligamentos cruzados de la rodilla son…',o:['Intracapsulares','Extracapsulares','Capsulares','Interóseos'],e:'Están dentro de la cápsula.'},
+ {t:'artic',q:'Los ligamentos amarillos…',o:['Unen láminas y, por sus fibras elásticas, regresan la columna tras la flexión','Están en la cara anterior de los cuerpos vertebrales','Unen las puntas de los procesos espinosos','Forman el disco intervertebral'],e:'Longitudinal anterior = cara anterior; supraespinoso = puntas de procesos espinosos.'},
+ {t:'artic',q:'La articulación tibiofibular distal es una…',o:['Sindesmosis','Sinovial plana','Sínfisis','Gonfosis'],e:'La proximal es sinovial plana.'},
+ {t:'artic',q:'La articulación talocrural (tobillo) es…',o:['Sinovial troclear','Sinovial esferoidea','Sindesmosis','Sinovial plana'],e:'Permite sobre todo flexión y extensión del pie.'},
+ {t:'artic',q:'Según la clase, a mayor movilidad de una articulación…',o:['Mayor necesidad de elementos estabilizadores','Mayor estabilidad intrínseca','Menor necesidad de ligamentos','Menos cartílago articular'],e:'Las articulaciones poco móviles son las que tienen gran estabilidad intrínseca.'},
+];
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+function shuffle(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ---------- tabs ---------- */
+const tabs = ['resumen','tarjetas','examen'];
+function showTab(id){
+  tabs.forEach(t => {
+    $('#panel-'+t).hidden = t !== id;
+    $('#tab-'+t).setAttribute('aria-selected', t === id ? 'true' : 'false');
+  });
+  store.set('morfo-tab', id);
+}
+document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => { showTab(b.dataset.tab); window.scrollTo({top:0}); }));
+
+function filterBar(el, current, onPick){
+  el.innerHTML = Object.entries(TOPICS).map(([k,v]) =>
+    `<button class="chip" type="button" data-k="${k}" aria-pressed="${k===current}">${v}</button>`).join('');
+  el.querySelectorAll('button').forEach(b => b.addEventListener('click', () => onPick(b.dataset.k)));
+}
+
+/* ---------- flashcards ---------- */
+const fc = { topic:'all', deck:[], revealed:false, mastered:new Set(store.get('morfo-mastered', [])) };
+function fcPool(){ return CARDS.map((c,i)=>i).filter(i => fc.topic==='all' || CARDS[i].t===fc.topic); }
+function fcStart(topic){
+  fc.topic = topic;
+  fc.deck = shuffle(fcPool().filter(i => !fc.mastered.has(i)));
+  fc.revealed = false;
+  filterBar($('#fc-filters'), topic, fcStart);
+  fcRender();
+}
+function fcRender(){
+  const pool = fcPool();
+  const done = pool.filter(i => fc.mastered.has(i)).length;
+  $('#fc-progress').textContent = `${done} de ${pool.length} dominadas`;
+  $('#fc-bar').style.width = (pool.length ? done/pool.length*100 : 0) + '%';
+  const stage = $('#fc-stage');
+  if(!fc.deck.length){
+    stage.innerHTML = `<div class="qcard"><p class="q">Dominaste todas las tarjetas de “${esc(TOPICS[fc.topic])}”.</p>
+      <p class="small">Vuelve a pasarlas mañana: repetir con días de por medio es lo que hace que no se olviden.</p>
+      <div class="actions"><button class="btn primary" id="fc-reset" type="button">Empezar de nuevo</button></div></div>`;
+    $('#fc-reset').addEventListener('click', () => { pool.forEach(i => fc.mastered.delete(i)); store.set('morfo-mastered',[...fc.mastered]); fcStart(fc.topic); });
+    return;
+  }
+  const c = CARDS[fc.deck[0]];
+  stage.innerHTML = `<button class="card" id="fc-card" type="button" aria-live="polite">
+      <span class="topic">${esc(TOPICS[c.t])} · quedan ${fc.deck.length}</span>
+      <span class="q">${esc(c.q)}</span>
+      ${fc.revealed ? `<span class="a">${esc(c.a)}</span>` : `<span class="hint">Piensa tu respuesta y toca para voltear</span>`}
+    </button>
+    <div class="actions">
+      ${fc.revealed
+        ? `<button class="btn good" id="fc-ok" type="button">La sabía</button><button class="btn again" id="fc-again" type="button">Repasar</button>`
+        : `<button class="btn primary" id="fc-flip" type="button">Mostrar respuesta</button>`}
+      <button class="btn" id="fc-shuffle" type="button">Barajar</button>
+    </div>`;
+  $('#fc-card').addEventListener('click', fcFlip);
+  $('#fc-flip') && $('#fc-flip').addEventListener('click', fcFlip);
+  $('#fc-ok') && $('#fc-ok').addEventListener('click', fcOk);
+  $('#fc-again') && $('#fc-again').addEventListener('click', fcAgain);
+  $('#fc-shuffle').addEventListener('click', () => { fc.deck = shuffle(fc.deck); fc.revealed=false; fcRender(); });
+}
+function fcFlip(){ if(!fc.revealed){ fc.revealed = true; fcRender(); } }
+function fcOk(){ fc.mastered.add(fc.deck.shift()); store.set('morfo-mastered',[...fc.mastered]); fc.revealed=false; fcRender(); }
+function fcAgain(){
+  // Put it back a few cards later so it returns soon.
+  const id = fc.deck.shift(); const pos = Math.min(fc.deck.length, 3); fc.deck.splice(pos, 0, id);
+  fc.revealed=false; fcRender();
+}
+document.addEventListener('keydown', e => {
+  if($('#panel-tarjetas').hidden || e.target.matches('input,textarea') || !fc.deck.length) return;
+  if(e.key===' '){ e.preventDefault(); fcFlip(); }
+  else if(e.key==='1' && fc.revealed) fcOk();
+  else if(e.key==='2' && fc.revealed) fcAgain();
+});
+
+/* ---------- quiz ---------- */
+const qz = { topic:'all', list:[], i:0, score:0, wrong:[], answered:false, order:[] };
+function qzStart(topic, onlyIds){
+  qz.topic = topic;
+  const ids = onlyIds || QUIZ.map((q,i)=>i).filter(i => topic==='all' || QUIZ[i].t===topic);
+  qz.list = shuffle(ids); qz.i = 0; qz.score = 0; qz.wrong = []; qz.answered = false;
+  filterBar($('#qz-filters'), topic, t => qzStart(t));
+  qzRender();
+}
+function qzRender(){
+  const stage = $('#qz-stage');
+  const n = qz.list.length;
+  $('#qz-progress').textContent = qz.i < n ? `Pregunta ${qz.i+1} de ${n} · ${qz.score} correctas` : `${qz.score} de ${n}`;
+  $('#qz-bar').style.width = (n ? Math.min(qz.i, n)/n*100 : 0) + '%';
+  if(qz.i >= n){
+    const pct = n ? Math.round(qz.score/n*100) : 0;
+    const msg = pct>=90 ? 'Muy bien. Repite mañana para fijarlo.' : pct>=70 ? 'Vas bien. Repasa las falladas y vuelve a intentarlo.' : 'Vuelve al resumen de las unidades donde fallaste y repite.';
+    stage.innerHTML = `<div class="qcard"><span class="score">${pct}%</span><p>${qz.score} de ${n} correctas. ${msg}</p>
+      ${qz.wrong.length ? `<h3>Para repasar</h3><div class="review">${qz.wrong.map(i => `<div><b>${esc(QUIZ[i].q)}</b><br>${esc(QUIZ[i].o[0])}</div>`).join('')}</div>` : ''}
+      <div class="actions">
+        ${qz.wrong.length ? `<button class="btn primary" id="qz-wrong" type="button">Repetir solo las falladas (${qz.wrong.length})</button>` : ''}
+        <button class="btn" id="qz-new" type="button">Nuevo intento</button>
+      </div></div>`;
+    const w = qz.wrong.slice();
+    $('#qz-wrong') && $('#qz-wrong').addEventListener('click', () => qzStart(qz.topic, w));
+    $('#qz-new').addEventListener('click', () => qzStart(qz.topic));
+    return;
+  }
+  const q = QUIZ[qz.list[qz.i]];
+  qz.order = shuffle([0,1,2,3]);
+  qz.answered = false;
+  stage.innerHTML = `<div class="qcard">
+      <span class="eyebrow">${esc(TOPICS[q.t])}</span>
+      <p class="q">${esc(q.q)}</p>
+      <div class="opts">${qz.order.map((k,j) => `<button class="opt" type="button" data-k="${k}">${'ABCD'[j]}. ${esc(q.o[k])}</button>`).join('')}</div>
+      <div id="qz-after"></div>
+    </div>`;
+  stage.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => qzAnswer(+b.dataset.k)));
+}
+function qzAnswer(k){
+  if(qz.answered) return;
+  qz.answered = true;
+  const id = qz.list[qz.i], q = QUIZ[id];
+  const ok = k === 0;
+  if(ok) qz.score++; else qz.wrong.push(id);
+  document.querySelectorAll('#qz-stage .opt').forEach(b => {
+    b.disabled = true;
+    const bk = +b.dataset.k;
+    if(bk === 0) b.classList.add('right');
+    else if(bk === k) b.classList.add('wrong');
+  });
+  $('#qz-after').innerHTML = `<p class="expl"><b>${ok ? 'Correcto.' : 'Incorrecto.'}</b> ${esc(q.e)}</p>
+    <div class="actions"><button class="btn primary" id="qz-next" type="button">${qz.i+1 < qz.list.length ? 'Siguiente' : 'Ver resultado'}</button></div>`;
+  $('#qz-progress').textContent = `Pregunta ${qz.i+1} de ${qz.list.length} · ${qz.score} correctas`;
+  const next = $('#qz-next'); next.focus({preventScroll:true});
+  next.addEventListener('click', () => { qz.i++; qzRender(); });
+}
+
+/* ---------- boot ---------- */
+fcStart('all');
+qzStart('all');
+const savedTab = store.get('morfo-tab', 'resumen');
+showTab(tabs.includes(savedTab) ? savedTab : 'resumen');
+</script>
+</body>
+</html>
